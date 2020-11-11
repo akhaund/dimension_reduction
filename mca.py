@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
 # Author: Anshuman Khaund <ansh.khaund@gmail.com>
+# Date: 11/10/2020
+# Acknowledgements:
+#      https://github.com/esafak/mca
+#      https://personal.utdallas.edu/~herve/Abdi-MCA2007-pretty.pdf
 
 import numpy as np
 import pandas as pd
 
 from scipy.linalg import svd
 
-from plots import Plotters as plots
+import plots
 
 
 class OutputMCA:
