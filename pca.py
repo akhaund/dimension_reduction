@@ -27,22 +27,31 @@ class OutputPCA:
         self._df = df
         self._pca = PCA().fit(df.values)
 
-    def explained_variance(self):
+    def get_explained_variance(self):
         """ Pareto-Chart of the explained variance
         """
         expl_var = pd.DataFrame({
             "var_exp": self._pca.explained_variance_ratio_,
-            "cumul_var_exp": self._pca.explained_variance_ratio_.cumsum()})
+            "cumul_var_exp": self._pca.explained_variance_ratio_.cumsum()
+        })
         expl_var.index += 1
 
         # Plotting
         fig = plots.explained_variance_plot(expl_var)
         return fig
 
-    def projections(self,
-                    labels,
-                    n_components: int = 2,
-                    feature_projections: bool = True):
+    def get_scree_plot(self):
+        eig_vals = pd.DataFrame({
+            "eig_val": self._pca.explained_variance_
+        })
+        eig_vals.index += 1
+        fig = plots.scree_plot(eig_vals)
+        return fig
+
+    def get_projections(self,
+                        labels,
+                        n_components: int = 2,
+                        feature_projections: bool = True):
         """ Low-dimensional (2D or 3D) projection of the data
         """
         features, indeces = self._df.columns, self._df.index.values
@@ -58,14 +67,16 @@ class OutputPCA:
         pca_components = pd.DataFrame(
             data=self._pca.components_[:n, :].T,  # components are as rows
             index=features,
-            columns=["PC" + str(i + 1) for i in range(n)])
+            columns=["PC" + str(i + 1) for i in range(n)]
+        )
         pca_transformed = pd.DataFrame(
             data=np.concatenate(
                 (self._pca.transform(self._df.values)[:, :n],
                  labels.reshape(len(labels), 1),
                  indeces.reshape(len(indeces), 1)),
                 axis=1),
-            columns=list(pca_components.columns) + ["label", "idx"])
+            columns=list(pca_components.columns) + ["label", "idx"]
+        )
 
         # Plotting
         fig = plots.low_dimensional_projection(n,
@@ -95,15 +106,20 @@ if __name__ == "__main__":
                    .values)
     iris.data = pd.DataFrame(
         data=iris.data,
-        columns=iris.feature_names)
+        columns=iris.feature_names
+    )
     # 2D visualization
-    OutputPCA(iris.data).projections(
-        labels=iris.target).show()
+    OutputPCA(iris.data).get_projections(
+        labels=iris.target
+    ).show()
     # 3D visualization
-    OutputPCA(iris.data).projections(
+    OutputPCA(iris.data).get_projections(
         labels=iris.target,
-        n_components=3).show()
+        n_components=3
+    ).show()
+    # Scree Plot
+    OutputPCA(iris.data).get_scree_plot().show()
     # Explained variance
-    OutputPCA(iris.data).explained_variance().show()
-    # Get components
-    OutputPCA(iris.data).get_components(n_components=3)
+    OutputPCA(iris.data).get_explained_variance().show()
+    # # Get components
+    # OutputPCA(iris.data).get_components(n_components=3)

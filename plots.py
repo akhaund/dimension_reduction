@@ -9,18 +9,20 @@ import plotly.graph_objects as go
 from statistics import median
 
 
-def explained_variance_plot(arr):
+def explained_variance_plot(df):
     """ Pareto-Chart of the explained variance
     """
     trace1 = dict(
         type="bar",
-        x=arr.index,
-        y=arr["var_exp"])
+        x=df.index,
+        y=df["var_exp"]
+    )
     trace2 = dict(
         type="scatter",
-        x=arr.index,
-        y=arr["cumul_var_exp"],
-        line=dict(color="#dadbb2"))
+        x=df.index,
+        y=df["cumul_var_exp"],
+        line=dict(color="#dadbb2")
+    )
     traces = [trace1, trace2]
     layout = go.Layout(
         showlegend=False,
@@ -29,8 +31,30 @@ def explained_variance_plot(arr):
         yaxis=dict(title="Variance Explained",
                    tickformat=",.1%",
                    gridcolor="#828994"),
-        title="Variance explained by Principal Components")
+        title="Variance explained by Principal Components"
+    )
     fig = go.Figure(traces, layout)
+    return fig
+
+
+def scree_plot(df):
+    trace = dict(
+        type="scatter",
+        x=df.index,
+        y=df["eig_val"],
+        line=dict(color="#dadbb2")
+    )
+    layout = go.Layout(
+        showlegend=False,
+        template="plotly_dark",
+        xaxis=dict(title="Principal Component rank",
+                   tickformat="d"),
+        yaxis=dict(title="Eigen Value",
+                   tickformat=",.3f",
+                   gridcolor="#828994"),
+        title="Eigen Values by Principal Components"
+    )
+    fig = go.Figure(trace, layout)
     return fig
 
 
@@ -56,7 +80,7 @@ def low_dimensional_projection(n_comp, components, transforms,
         template="plotly_dark")
 
     # Projections of features
-    # todo: Alternate method for projections and annotations
+    # todo: Alternate ways for projections & annotations, they don't look good
     if n_comp == 2 and project_features:
         # scale feature prokections
         cols = "PC1 PC2".split()
