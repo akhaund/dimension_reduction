@@ -2,12 +2,15 @@
 
 # Author: Anshuman Khaund <ansh.khaund@gmail.com>
 
+import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 
+from statistics import median
+
 
 def explained_variance_plot(arr):
-    """ 'Variance Explained' by PCA/MCA components
+    """ Pareto-Chart of the explained variance
     """
     trace1 = dict(
         type="bar",
@@ -32,7 +35,7 @@ def explained_variance_plot(arr):
 
 
 def low_dimensional_projection(n_comp, components, transforms,
-                               project_features, scale_features):
+                               project_features):
     """ 2d/3d projections from PCA/MCA
     """
     if n_comp == 2:
@@ -51,9 +54,16 @@ def low_dimensional_projection(n_comp, components, transforms,
         hover_data=hover_data,
         title="Principal Component Analysis",
         template="plotly_dark")
+
     # Projections of features
+    # todo: Alternate method for projections and annotations
     if n_comp == 2 and project_features:
-        components *= scale_features
+        # scale feature prokections
+        cols = "PC1 PC2".split()
+        transforms["norm"] = transforms[cols].apply(np.linalg.norm, axis=1)
+        components["norm"] = components[cols].apply(np.linalg.norm, axis=1)
+        scale = (median(transforms["norm"]/median(components["norm"])))
+        components = components * scale * 0.75
         for i, val in enumerate(components.index):
             fig.add_shape(
                 type="line",

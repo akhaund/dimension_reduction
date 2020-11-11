@@ -13,7 +13,11 @@ import plots
 
 
 class OutputPCA:
-    """ Principal Component Analysis """
+    """ Returns,
+        1. Pareto-chart of the explained variance, or
+        2. Low-dimensional (2D or 3D) projection of the data, or
+        3. The principal components on which to project the data.
+    """
 
     def __init__(self, df: pd.DataFrame) -> None:
         # Data columns being standardized prior to PCA
@@ -24,7 +28,7 @@ class OutputPCA:
         self._pca = PCA().fit(df.values)
 
     def explained_variance(self):
-        """For feature-space reduction step before model training
+        """ Pareto-Chart of the explained variance
         """
         expl_var = pd.DataFrame({
             "var_exp": self._pca.explained_variance_ratio_,
@@ -38,9 +42,8 @@ class OutputPCA:
     def projections(self,
                     labels,
                     n_components: int = 2,
-                    feature_scale: int = 5,
                     feature_projections: bool = True):
-        """ Visualize data along 2 or 3 principal components
+        """ Low-dimensional (2D or 3D) projection of the data
         """
         features, indeces = self._df.columns, self._df.index.values
         n = n_components
@@ -53,7 +56,7 @@ class OutputPCA:
                   file=sys.stderr)
             return
         pca_components = pd.DataFrame(
-            data=self._pca.components_[:n, :].T,  # Components are as rows
+            data=self._pca.components_[:n, :].T,  # components are as rows
             index=features,
             columns=["PC" + str(i + 1) for i in range(n)])
         pca_transformed = pd.DataFrame(
@@ -68,12 +71,13 @@ class OutputPCA:
         fig = plots.low_dimensional_projection(n,
                                                pca_components,
                                                pca_transformed,
-                                               feature_projections,
-                                               feature_scale)
+                                               feature_projections)
         return fig
 
     def get_components(self,
                        n_components: int = 2):
+        """ The principal components on which to project the data
+        """
         print("Principal components returned as 'rows'.")
         return self._pca.components_[:n_components, :]
 
@@ -94,8 +98,7 @@ if __name__ == "__main__":
         columns=iris.feature_names)
     # 2D visualization
     OutputPCA(iris.data).projections(
-        labels=iris.target,
-        feature_scale=2).show()
+        labels=iris.target).show()
     # 3D visualization
     OutputPCA(iris.data).projections(
         labels=iris.target,
