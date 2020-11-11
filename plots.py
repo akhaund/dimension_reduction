@@ -77,7 +77,8 @@ def low_dimensional_projection(n_comp, components, transforms,
         color="label",
         hover_data=hover_data,
         title="Principal Component Analysis",
-        template="plotly_dark")
+        template="plotly_dark"
+    )
 
     # Projections of features
     # todo: Alternate ways for projections & annotations, they don't look good
@@ -95,12 +96,14 @@ def low_dimensional_projection(n_comp, components, transforms,
                 y0=0,
                 x1=components.iloc[i, 0],
                 y1=components.iloc[i, 1],
-                line=dict(color="#dadbb2", width=1))
+                line=dict(color="#dadbb2", width=1)
+            )
             fig.add_annotation(
                 x=components.iloc[i, 0],
                 y=components.iloc[i, 1],
                 text=val,
                 showarrow=True,
                 arrowsize=2,
-                arrowhead=2)
+                arrowhead=2
+            )
     return fig

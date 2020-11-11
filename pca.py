@@ -121,5 +121,5 @@ if __name__ == "__main__":
     OutputPCA(iris.data).get_scree_plot().show()
     # Explained variance
     OutputPCA(iris.data).get_explained_variance().show()
-    # # Get components
-    # OutputPCA(iris.data).get_components(n_components=3)
+    # Get components
+    OutputPCA(iris.data).get_components(n_components=3)
