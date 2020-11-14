@@ -2,6 +2,7 @@
 
 # Author: Anshuman Khaund <ansh.khaund@gmail.com>
 
+import pandas as pd
 from sklearn.feature_selection import mutual_info_classif
 
 

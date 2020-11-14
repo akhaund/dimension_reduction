@@ -29,7 +29,7 @@ def explained_variance_plot(df):
         template="plotly_dark",
         xaxis=dict(title="Principal Component rank"),
         yaxis=dict(title="Variance Explained",
-                   tickformat=",.1%",
+                   tickformat="%",
                    gridcolor="#828994"),
         title="Variance explained by Principal Components"
     )
@@ -48,9 +48,9 @@ def scree_plot(df):
         showlegend=False,
         template="plotly_dark",
         xaxis=dict(title="Principal Component rank",
-                   tickformat="d"),
+                   tickformat=",d"),
         yaxis=dict(title="Eigen Value",
-                   tickformat=",.3f",
+                   tickformat=",.1f",
                    gridcolor="#828994"),
         title="Eigen Values by Principal Components"
     )
