@@ -35,9 +35,12 @@ class OutputPCA:
             "cumul_var_exp": self._pca.explained_variance_ratio_.cumsum()
         })
         expl_var.index += 1
-
-        # Plotting
-        fig = plots.explained_variance_plot(expl_var)
+        fig = plots.explained_variance_plot(
+            df=expl_var,
+            x_title="Principal Component Rank",
+            y_title="Variance Explained",
+            title="Variance explained by Principal Components"
+        )
         return fig
 
     def get_scree_plot(self):
@@ -45,7 +48,11 @@ class OutputPCA:
             "eig_val": self._pca.explained_variance_
         })
         eig_vals.index += 1
-        fig = plots.scree_plot(eig_vals)
+        fig = plots.scree_plot(
+            df=eig_vals,
+            x_title="Principal Component rank",
+            y_title="Eigen Value",
+            title="Eigen Values by Principal Components")
         return fig
 
     def get_projections(self,
@@ -77,12 +84,13 @@ class OutputPCA:
                 axis=1),
             columns=list(pca_components.columns) + ["label", "idx"]
         )
-
-        # Plotting
-        fig = plots.low_dimensional_projection(n,
-                                               pca_components,
-                                               pca_transformed,
-                                               feature_projections)
+        fig = plots.low_dimensional_projection(
+            n,
+            pca_components,
+            pca_transformed,
+            feature_projections,
+            title="Principal Component Analysis"
+        )
         return fig
 
     def get_components(self,
@@ -110,7 +118,8 @@ if __name__ == "__main__":
     )
     # 2D visualization
     OutputPCA(iris.data).get_projections(
-        labels=iris.target
+        labels=iris.target,
+        project_features=True
     ).show()
     # 3D visualization
     OutputPCA(iris.data).get_projections(
