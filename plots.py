@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 from statistics import median
 
 
-def explained_variance_plot(df):
+def explained_variance_plot(df, x_title, y_title, title):
     """ Pareto-Chart of the explained variance
     """
     trace1 = dict(
@@ -27,17 +27,17 @@ def explained_variance_plot(df):
     layout = go.Layout(
         showlegend=False,
         template="plotly_dark",
-        xaxis=dict(title="Principal Component rank"),
-        yaxis=dict(title="Variance Explained",
+        xaxis=dict(title=x_title),
+        yaxis=dict(title=y_title,
                    tickformat="%",
                    gridcolor="#828994"),
-        title="Variance explained by Principal Components"
+        title=title
     )
     fig = go.Figure(traces, layout)
     return fig
 
 
-def scree_plot(df):
+def scree_plot(df, x_title, y_title, title):
     trace = dict(
         type="scatter",
         x=df.index,
@@ -47,19 +47,20 @@ def scree_plot(df):
     layout = go.Layout(
         showlegend=False,
         template="plotly_dark",
-        xaxis=dict(title="Principal Component rank",
+        xaxis=dict(title=x_title,
                    tickformat=",d"),
-        yaxis=dict(title="Eigen Value",
+        yaxis=dict(title=y_title,
                    tickformat=",.1f",
                    gridcolor="#828994"),
-        title="Eigen Values by Principal Components"
+        title=title
     )
     fig = go.Figure(trace, layout)
     return fig
 
 
 def low_dimensional_projection(n_comp, components, transforms,
-                               project_features):
+                               project_features: bool = False,
+                               title: str = "Dimension Reduction"):
     """ 2d/3d projections from PCA/MCA
     """
     if n_comp == 2:
@@ -76,7 +77,7 @@ def low_dimensional_projection(n_comp, components, transforms,
         **axes,
         color="label",
         hover_data=hover_data,
-        title="Principal Component Analysis",
+        title=title,
         template="plotly_dark"
     )
 
