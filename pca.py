@@ -119,7 +119,7 @@ if __name__ == "__main__":
     # 2D visualization
     OutputPCA(iris.data).get_projections(
         labels=iris.target,
-        project_features=True
+        feature_projections=True
     ).show()
     # 3D visualization
     OutputPCA(iris.data).get_projections(
