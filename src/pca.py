@@ -102,7 +102,7 @@ class OutputPCA:
         return fig
 
     def get_components(self,
-                       n_components: int = 2,):
+                       n_components: int,):
         """ The principal components on which to project the data
         """
         print("Principal components returned as 'rows'.")
@@ -112,33 +112,23 @@ class OutputPCA:
 # Test
 if __name__ == "__main__":
 
-    from sklearn import datasets
-
-    # test PCA
-    iris = datasets.load_iris()
-    iris.target = (
-        pd.Series(iris.target,)
-        .replace(dict(zip(np.unique(iris.target,),
-                          iris.target_names)))
-        .values
-    )
-    iris.data = pd.DataFrame(
-        data=iris.data,
-        columns=iris.feature_names,
-    )
+    # Test with the Iris data set
+    iris = pd.read_csv("data/iris.csv")
+    data, labels = (iris.drop(columns="labels"),
+                    iris["labels"])
     # 2D visualization
-    OutputPCA(iris.data).get_projections(
-        labels=iris.target,
+    OutputPCA(data).get_projections(
+        labels=labels,
         feature_projections=True,
     ).show()
     # 3D visualization
-    OutputPCA(iris.data).get_projections(
-        labels=iris.target,
+    OutputPCA(data).get_projections(
+        labels=labels,
         n_components=3,
     ).show()
     # Scree Plot
-    OutputPCA(iris.data).get_scree_plot().show()
+    OutputPCA(data).get_scree_plot().show()
     # Explained variance
-    OutputPCA(iris.data).get_explained_variance().show()
+    OutputPCA(data).get_explained_variance().show()
     # Get components
-    OutputPCA(iris.data).get_components(n_components=3)
+    OutputPCA(data).get_components(n_components=2)
