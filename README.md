@@ -1,5 +1,5 @@
 
-**This repository contains various dimension reduction methods/steps, that I use, or have used.**
+**This repository contains tools for dimension reduction.**
 
 <br>
 
