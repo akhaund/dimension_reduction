@@ -119,9 +119,11 @@ class OutputMCA:
         return fig
 
     def get_projections(self):
-        G = getattr(self._mca, "latent_rows")
+        G = getattr(self._mca, "latent_cols")
+        print(G)
+        print(self._dat)
 
-        A = pd.DataFrame(G[:, :2], columns=["A", "B"])
+        A = pd.DataFrame(G[:, :2], index=["A", "B"])
         px.scatter(A, x="A", y="B").show()
 
     def get_components():
@@ -146,9 +148,9 @@ if __name__ == "__main__":
     column_index = pd.MultiIndex.from_arrays([experts, feature, observations])
     df.columns = column_index
 
-    # Explained variance
-    OutputMCA(df).get_explained_variance().show()
-    # Scree plot
-    OutputMCA(df).get_scree_plot().show()
+    # # Explained variance
+    # OutputMCA(df).get_explained_variance().show()
+    # # Scree plot
+    # OutputMCA(df).get_scree_plot().show()
     # Get prokections
     OutputMCA(df).get_projections()
