@@ -15,13 +15,13 @@ def explained_variance_plot(df, x_title, y_title, title):
     trace1 = dict(
         type="bar",
         x=df.index,
-        y=df["var_exp"]
+        y=df["var_exp"],
     )
     trace2 = dict(
         type="scatter",
         x=df.index,
         y=df["cumul_var_exp"],
-        line=dict(color="#dadbb2")
+        line=dict(color="#dadbb2"),
     )
     traces = [trace1, trace2]
     layout = go.Layout(
@@ -31,7 +31,7 @@ def explained_variance_plot(df, x_title, y_title, title):
         yaxis=dict(title=y_title,
                    tickformat="%",
                    gridcolor="#828994"),
-        title=title
+        title=title,
     )
     fig = go.Figure(traces, layout)
     return fig
@@ -41,18 +41,19 @@ def scree_plot(df, x_title, y_title, title):
     trace = dict(
         type="scatter",
         x=df.index,
-        y=df["eig_val"],
-        line=dict(color="#dadbb2")
+        y=df["eigen_values"],
+        line=dict(color="#dadbb2"),
     )
     layout = go.Layout(
         showlegend=False,
         template="plotly_dark",
-        xaxis=dict(title=x_title,
-                   tickformat=",d"),
+        xaxis=dict(title=x_title,  # todo: Change appearance of X gridlines
+                   tickformat=",d",
+                   gridcolor="#000000"),
         yaxis=dict(title=y_title,
                    tickformat=",.1f",
                    gridcolor="#828994"),
-        title=title
+        title=title,
     )
     fig = go.Figure(trace, layout)
     return fig
@@ -60,7 +61,8 @@ def scree_plot(df, x_title, y_title, title):
 
 def low_dimensional_projection(n_comp, components, transforms,
                                project_features: bool = False,
-                               title: str = "Dimension Reduction"):
+                               title: str = "Dimension Reduction",
+                               ):
     """ 2d/3d projections from PCA/MCA
     """
     if n_comp == 2:
@@ -71,16 +73,20 @@ def low_dimensional_projection(n_comp, components, transforms,
         axes = dict(zip(("x", "y", "z"), components.columns))
     # edit hover data
     hover_data = dict.fromkeys(components.columns, False)
-    hover_data.update(dict(label=True, idx=True))
+    if "label" not in transforms.columns:
+        hover_data.update(dict(idx=True))
+        colr = None
+    else:
+        hover_data.update(dict(label=True, idx=True))
+        colr = "label"
     fig = plotter(  # ? What is this warning from Pylance
         transforms,
         **axes,
-        color="label",
+        color=colr,
         hover_data=hover_data,
         title=title,
-        template="plotly_dark"
+        template="plotly_dark",
     )
-
     # Projections of features
     # todo: Alternate ways for projections & annotations, they don't look good
     if n_comp == 2 and project_features:
@@ -97,7 +103,7 @@ def low_dimensional_projection(n_comp, components, transforms,
                 y0=0,
                 x1=components.iloc[i, 0],
                 y1=components.iloc[i, 1],
-                line=dict(color="#dadbb2", width=1)
+                line=dict(color="#dadbb2", width=1),
             )
             fig.add_annotation(
                 x=components.iloc[i, 0],
@@ -105,6 +111,6 @@ def low_dimensional_projection(n_comp, components, transforms,
                 text=val,
                 showarrow=True,
                 arrowsize=2,
-                arrowhead=2
+                arrowhead=2,
             )
     return fig
