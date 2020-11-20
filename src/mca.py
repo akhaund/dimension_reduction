@@ -25,7 +25,11 @@ import plotly.express as px
 class OutputMCA:
     """ Multiple Correspondence Analysis (under construction) """
 
-    def __init__(self, df) -> None:
+    def __init__(self,
+                 df: pd.DataFrame,
+                 correction: str
+                 ) -> None:
+        self._correction = correction
         if self._check_sparcity():
             self._sparse_type = sp.csr_matrix
             self._dat = self._sparse_type(df.values)
@@ -94,14 +98,14 @@ class OutputMCA:
         expl_var_ratio = (inertia/inertia.sum())
         expl_var = pd.DataFrame({
             "var_exp": expl_var_ratio,
-            "cumul_var_exp": expl_var_ratio.cumsum()
+            "cumul_var_exp": expl_var_ratio.cumsum(),
         })
         expl_var.index += 1
         fig = plots.explained_variance_plot(
             df=expl_var,
             x_title="Latent Variable Rank",
             y_title="Variance Explained",
-            title="Variance explained by Latent Variables"
+            title="Variance explained by Latent Variables",
         )
         return fig
 
@@ -114,7 +118,7 @@ class OutputMCA:
             df=eig_vals,
             x_title="Latent Variable Rank",
             y_title="Inertia (Eigen values)",
-            title="Inertia by Latent Variables"
+            title="Inertia by Latent Variables",
         )
         return fig
 
@@ -132,7 +136,7 @@ class OutputMCA:
 
 # Test
 if __name__ == "__main__":
-    df = pd.read_csv("data/burgundies.csv",
+    df = pd.read_csv("../data/burgundies.csv",
                      skiprows=1, index_col=0, header=0)
     target = df["oak_type"]
     df.drop(columns="oak_type", inplace=True)

@@ -109,27 +109,3 @@ class OutputPCA:
         """
         print("Principal components returned as 'rows'.")
         return self._pca.components_[:n_components, :]
-
-
-# Test
-if __name__ == "__main__":
-
-    # Test with the Iris data set
-    iris = pd.read_csv("../data/iris.csv")
-    data, labels = (iris.drop(columns="labels"),
-                    iris["labels"])
-    # 2D visualization
-    OutputPCA(data).get_projections(
-        labels=labels,
-    ).show()
-    # 3D visualization
-    OutputPCA(data).get_projections(
-        labels=labels,
-        n_components=3,
-    ).show()
-    # Scree Plot
-    OutputPCA(data).get_scree_plot().show()
-    # Explained variance
-    OutputPCA(data).get_explained_variance().show()
-    # Get components
-    OutputPCA(data).get_components(n_components=2)
