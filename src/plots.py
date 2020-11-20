@@ -90,7 +90,7 @@ def low_dimensional_projection(n_comp, components, transforms,
     # Projections of features
     # todo: Alternate ways for projections & annotations, they don't look good
     if n_comp == 2 and project_features:
-        # scale feature prokections
+        # scale feature projections
         cols = "PC1 PC2".split()
         transforms["norm"] = transforms[cols].apply(np.linalg.norm, axis=1)
         components["norm"] = components[cols].apply(np.linalg.norm, axis=1)

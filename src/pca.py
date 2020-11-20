@@ -61,7 +61,7 @@ class OutputPCA:
         return fig
 
     def get_projections(self,
-                        feature_projections: bool = True,
+                        project_features: bool = True,
                         labels=None,
                         n_components: int = 2,
                         ):
@@ -87,7 +87,8 @@ class OutputPCA:
             data=np.concatenate(
                 (self._pca.transform(self._df.values)[:, :n_components],
                  indeces.reshape(len(indeces), 1)),
-                axis=1),
+                axis=1,
+            ),
             columns=list(pca_components.columns) + ["idx"],
         )
         if labels is not None:
@@ -96,13 +97,14 @@ class OutputPCA:
             n_comp=n_components,
             components=pca_components,
             transforms=pca_transformed,
-            project_features=feature_projections,
+            project_features=project_features,
             title="Principal Component Analysis",
         )
         return fig
 
     def get_components(self,
-                       n_components: int,):
+                       n_components: int,
+                       ):
         """ The principal components on which to project the data
         """
         print("Principal components returned as 'rows'.")
@@ -113,13 +115,12 @@ class OutputPCA:
 if __name__ == "__main__":
 
     # Test with the Iris data set
-    iris = pd.read_csv("data/iris.csv")
+    iris = pd.read_csv("../data/iris.csv")
     data, labels = (iris.drop(columns="labels"),
                     iris["labels"])
     # 2D visualization
     OutputPCA(data).get_projections(
         labels=labels,
-        feature_projections=True,
     ).show()
     # 3D visualization
     OutputPCA(data).get_projections(
