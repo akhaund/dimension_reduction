@@ -1,9 +1,10 @@
 
 **
+This repository contains tools for dimension reduction. <br>
 
-WIP\n
-- PCA is most usable. \n
-This repository contains tools for dimension reduction.**
+WIP <br>
+- PCA is usable. <br>
+- MCA is next. <br>**
 
 <br>
 
