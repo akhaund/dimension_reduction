@@ -2,7 +2,6 @@
 
 # Author: Anshuman Khaund <ansh.khaund@gmail.com>
 
-from pca import OutputPCA
 import sys
 import numpy as np
 import pandas as pd
