@@ -2,6 +2,7 @@
 
 # Author: Anshuman Khaund <ansh.khaund@gmail.com>
 
+from pca import OutputPCA
 import sys
 import numpy as np
 import pandas as pd
@@ -109,3 +110,25 @@ class OutputPCA:
         """
         print("Principal components returned as 'rows'.")
         return self._pca.components_[:n_components, :]
+
+
+if __name__ == "__main__":
+
+    iris = pd.read_csv("../data/iris.csv")
+    data, labels = (iris.drop(columns="labels"),
+                    iris["labels"])
+    # 2D visualization
+    OutputPCA(data).get_projections(
+        labels=labels,
+    ).show()
+    # 3D visualization
+    OutputPCA(data).get_projections(
+        labels=labels,
+        n_components=3,
+    ).show()
+    # Scree Plot
+    OutputPCA(data).get_scree_plot().show()
+    # Explained variance
+    OutputPCA(data).get_explained_variance().show()
+    # Get components
+    OutputPCA(data).get_components(n_components=2)
