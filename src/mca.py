@@ -70,8 +70,10 @@ class OutputMCA:
         svd = self._svd
         outer = self._outer
         inv = self._inv
-        mca_out = namedtuple("mca_attrs",
-                             ["inertia", "latent_rows", "latent_cols"])
+        mca_out = namedtuple(
+            "mca_attrs",
+            ["inertia", "latent_rows", "latent_cols"],
+        )
         Z = X / sum(X)  # probability matrix
         sum_row = sum(Z, axis=1)
         sum_col = sum(Z, axis=0)

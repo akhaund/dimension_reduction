@@ -27,10 +27,14 @@ def explained_variance_plot(df, x_title, y_title, title):
     layout = go.Layout(
         showlegend=False,
         template="plotly_dark",
-        xaxis=dict(title=x_title),
-        yaxis=dict(title=y_title,
-                   tickformat="%",
-                   gridcolor="#828994"),
+        xaxis=dict(
+            title=x_title,
+        ),
+        yaxis=dict(
+            title=y_title,
+            tickformat="%",
+            gridcolor="#828994",
+        ),
         title=title,
     )
     fig = go.Figure(traces, layout)
@@ -47,12 +51,16 @@ def scree_plot(df, x_title, y_title, title):
     layout = go.Layout(
         showlegend=False,
         template="plotly_dark",
-        xaxis=dict(title=x_title,  # todo: Change appearance of X gridlines
-                   tickformat=",d",
-                   gridcolor="#000000"),
-        yaxis=dict(title=y_title,
-                   tickformat=",.1f",
-                   gridcolor="#828994"),
+        xaxis=dict(
+            title=x_title,  # todo: Change appearance of X gridlines
+            tickformat=",d",
+            gridcolor="#000000",
+        ),
+        yaxis=dict(
+            title=y_title,
+            tickformat=",.1f",
+            gridcolor="#828994",
+        ),
         title=title,
     )
     fig = go.Figure(trace, layout)
